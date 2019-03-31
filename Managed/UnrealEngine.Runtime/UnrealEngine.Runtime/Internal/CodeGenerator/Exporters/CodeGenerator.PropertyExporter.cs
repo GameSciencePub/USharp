@@ -69,7 +69,8 @@ namespace UnrealEngine.Runtime
                 // protected
                 (!isOwnerStruct && property.HasAnyPropertyFlags(EPropertyFlags.NativeAccessSpecifierProtected | EPropertyFlags.Protected)))
                 // If this is being force exported make it public instead of protected
-                && !forceExportProperties.Contains(property.GetPathName()))
+                && !forceExportProperties.Contains(property.GetPathName()) &&
+                isOwnerStruct == false)
             {
                 modifiers.Append("protected");
             }

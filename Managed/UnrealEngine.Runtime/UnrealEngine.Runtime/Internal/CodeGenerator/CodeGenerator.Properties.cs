@@ -1447,7 +1447,8 @@ namespace UnrealEngine.Runtime
                     if (unrealEnum != null && unrealEnum.GetIndexByName(new FName(enumValue)) != -1)
                     {
                         string enumValuePrefix = GetEnumValuePrefix(unrealEnum);
-                        enumValue = enumValue.RemoveFromStart(enumValuePrefix);
+                        // GS WARNING: see modification in CodeGenerator.Enums.cs
+                        //enumValue = enumValue.RemoveFromStart(enumValuePrefix);
                         return parameterTypeName + "." + enumValue;
                     }
                     else

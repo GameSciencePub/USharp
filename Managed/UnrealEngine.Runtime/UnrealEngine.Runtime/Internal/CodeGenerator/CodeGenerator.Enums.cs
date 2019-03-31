@@ -97,7 +97,7 @@ namespace UnrealEngine.Runtime
                 EnumValueInfo enumValue = new EnumValueInfo();
                 enumValue.Index = i;
                 enumValue.Value = unrealEnum.GetValueByIndex(i);
-                enumValue.Name = rawName;
+                enumValue.Name = MakeValidName(rawName);
                 enumValue.DisplayName = MakeValidName(unrealEnum.GetDisplayNameTextStringByIndex(i));
                 if (getDocumentation)
                 {
@@ -153,10 +153,11 @@ namespace UnrealEngine.Runtime
 
             foreach (EnumValueInfo enumValue in enumValues)
             {
-                if (!string.IsNullOrEmpty(commonPrefix))
-                {
-                    enumValue.Name = enumValue.Name.RemoveFromStart(commonPrefix);
-                }
+                // GS WARNING: this may make some enum like EDGF_256 invalid
+                //if (!string.IsNullOrEmpty(commonPrefix))
+                //{
+                //    enumValue.Name = enumValue.Name.RemoveFromStart(commonPrefix);
+                //}
 
                 //one enum has a member called "float" which isn't valid in C#. That said, C# enum values should be PascalCase anyway, so just uppercase it.
                 if (char.IsLower(enumValue.Name[0]))

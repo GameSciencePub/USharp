@@ -728,8 +728,11 @@ namespace UnrealEngine.Runtime
                                 }
                             }
 
-                            if (FPaths.IsSameOrSubDirectory(FPaths.ProjectDir, moduleDir) &&
-                                moduleName.Equals(FApp.GetProjectName(), StringComparison.OrdinalIgnoreCase))
+
+                            // GS WARNING : this is wrong for game sub modules which has a name different from Game Project
+                            //if (FPaths.IsSameOrSubDirectory(FPaths.ProjectDir, moduleDir) &&
+                            //    moduleName.Equals(FApp.GetProjectName(), StringComparison.OrdinalIgnoreCase))
+                            if (FPaths.IsSameOrSubDirectory(FPaths.ProjectDir, moduleDir))
                             {
                                 return UnrealModuleType.Game;
                             }
