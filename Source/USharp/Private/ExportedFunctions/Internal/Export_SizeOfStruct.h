@@ -198,7 +198,11 @@ CSEXPORT int32 CSCONV Export_SizeOfStruct_SizeOf_FSkeletalMeshComponentEndPhysic
 
 CSEXPORT int32 CSCONV Export_SizeOfStruct_SizeOf_FStartAsyncSimulationFunction()
 {
-	return sizeof(FStartAsyncSimulationFunction);
+#if ENGINE_MINOR_VERSION < 22
+    return sizeof(FStartAsyncSimulationFunction);
+#else
+    return sizeof(FActorTickFunction);
+#endif
 }
 
 CSEXPORT int32 CSCONV Export_SizeOfStruct_SizeOf_FStartPhysicsTickFunction()

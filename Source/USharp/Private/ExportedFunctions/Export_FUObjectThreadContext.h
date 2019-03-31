@@ -25,7 +25,12 @@ CSEXPORT UObject* CSCONV Export_FUObjectThreadContext_Get_ConstructedObject()
 
 CSEXPORT UObject* CSCONV Export_FUObjectThreadContext_Get_SerializedObject()
 {
-	return FUObjectThreadContext::Get().SerializedObject;
+#if ENGINE_MINOR_VERSION < 22
+    return FUObjectThreadContext::Get().SerializedObject;
+#else
+    return nullptr;
+#endif
+	
 }
 
 CSEXPORT void CSCONV Export_FUObjectThreadContext(RegisterFunc registerFunc)

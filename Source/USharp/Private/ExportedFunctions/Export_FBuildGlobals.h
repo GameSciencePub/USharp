@@ -70,7 +70,12 @@ CSEXPORT csbool CSCONV Export_FBuildGlobals_WITH_AUTOMATION_WORKER()
 
 CSEXPORT csbool CSCONV Export_FBuildGlobals_UE_BUILD_MINIMAL()
 {
-	return UE_BUILD_MINIMAL;
+#if ENGINE_MINOR_VERSION < 22
+    return UE_BUILD_MINIMAL;
+#else
+    return true;
+#endif
+	
 }
 
 CSEXPORT csbool CSCONV Export_FBuildGlobals_IS_MONOLITHIC()

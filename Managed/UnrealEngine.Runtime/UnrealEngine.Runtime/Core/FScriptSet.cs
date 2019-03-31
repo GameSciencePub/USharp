@@ -276,7 +276,9 @@ namespace UnrealEngine.Runtime
     [StructLayout(LayoutKind.Sequential)]
     public struct FScriptSetLayout
     {
+#if !UE4_422_OR_NEWER
         public int ElementOffset;
+#endif
         public int HashNextIdOffset;
         public int HashIndexOffset;
         public int Size;
@@ -287,7 +289,9 @@ namespace UnrealEngine.Runtime
     [StructLayout(LayoutKind.Sequential)]
     public struct FScriptSparseArrayLayout
     {
+#if !UE4_422_OR_NEWER
         public int ElementOffset;
+#endif
         public int Alignment;
         public int Size;
     }

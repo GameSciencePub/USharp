@@ -26,10 +26,10 @@ namespace UnrealEngine.Runtime
             ValidateStructSize<FScriptDelegate>(Native_SizeOfStruct.SizeOf_FScriptDelegate);
             ValidateStructSize<FMulticastScriptDelegate>(Native_SizeOfStruct.SizeOf_FMulticastScriptDelegate);
             ValidateStructSize<FScriptArray>(Native_SizeOfStruct.SizeOf_FScriptArray);
-            ValidateStructSize<FScriptMap>(Native_SizeOfStruct.SizeOf_FScriptMap);
+            ValidateStructSize<FScriptMap>(Native_SizeOfStruct.SizeOf_FScriptMap);//
             ValidateStructSize<FScriptMapLayout>(Native_SizeOfStruct.SizeOf_FScriptMapLayout);
-            ValidateStructSize<FScriptSetLayout>(Native_SizeOfStruct.SizeOf_FScriptSetLayout);
-            ValidateStructSize<FScriptSparseArrayLayout>(Native_SizeOfStruct.SizeOf_FScriptSparseArrayLayout);
+            ValidateStructSize<FScriptSetLayout>(Native_SizeOfStruct.SizeOf_FScriptSetLayout);//
+            ValidateStructSize<FScriptSparseArrayLayout>(Native_SizeOfStruct.SizeOf_FScriptSparseArrayLayout);//
             ValidateStructSize<FDefaultBitArrayAllocator>(Native_SizeOfStruct.SizeOf_FDefaultBitArrayAllocator);
             ValidateStructSize<FScriptBitArray>(Native_SizeOfStruct.SizeOf_FScriptBitArray);
             ValidateStructSize<FScriptSparseArray>(Native_SizeOfStruct.SizeOf_FScriptSparseArray);
@@ -73,7 +73,7 @@ namespace UnrealEngine.Runtime
 
             foreach (Native_SizeOfStruct.Del_SizeOf del in dels)
             {
-                ValidateStructSize<Engine.FTickFunction>(del, size);
+                ValidateStructSize<Engine.FTickFunction>(del, size);//
             }
         }
 

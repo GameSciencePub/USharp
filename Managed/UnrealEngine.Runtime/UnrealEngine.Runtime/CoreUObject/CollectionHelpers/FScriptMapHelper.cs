@@ -158,9 +158,13 @@ namespace UnrealEngine.Runtime
             }
 
             IntPtr pairPtr = map->GetData(index, ref mapLayout);
+#if !UE4_422_OR_NEWER
             keyPtr = pairPtr + mapLayout.KeyOffset;
             valuePtr = pairPtr + mapLayout.ValueOffset;
             return true;
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         /// <summary>
@@ -177,7 +181,11 @@ namespace UnrealEngine.Runtime
                 return IntPtr.Zero;
             }
 
+#if !UE4_422_OR_NEWER
             return map->GetData(index, ref mapLayout) + mapLayout.KeyOffset;
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         /// <summary>

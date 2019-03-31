@@ -130,7 +130,9 @@ namespace UnrealEngine.Runtime
     [StructLayout(LayoutKind.Sequential)]
     public struct FScriptMapLayout
     {
+#if !UE4_422_OR_NEWER
         public int KeyOffset;
+#endif
         public int ValueOffset;
 
         public FScriptSetLayout SetLayout;
