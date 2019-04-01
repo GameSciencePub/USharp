@@ -953,7 +953,7 @@ namespace UnrealEngine.Runtime
 
         public void CheckDestroyed()
         {
-            if (IsDestroyed)
+            if (this == null || IsDestroyed)
             {
                 throw new Exception("Attempting to access a destroyed unreal object of type " + GetType().ToString());
             }

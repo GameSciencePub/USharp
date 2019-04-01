@@ -19,12 +19,12 @@ namespace UnrealEngine.Runtime
             IntPtr actorClass = Runtime.Classes.AActor;
             IntPtr actorComponentClass = Runtime.Classes.UActorComponent;
 
-            repProps = AddVTableRedirect(objectClass, "DummyRepProps", new GetLifetimeReplicatedPropsDel(OnGetLifetimeReplicatedProps));
-            setupPlayerInput = AddVTableRedirect(pawnClass, "DummySetupPlayerInput", new SetupPlayerInputComponentDel(OnSetupPlayerInputComponent));
-            actorBeginPlay = AddVTableRedirect(actorClass, "DummyActorBeginPlay", new ActorBeginPlayDel(OnActorBeginPlay));
-            actorEndPlay = AddVTableRedirect(actorClass, "DummyActorEndPlay", new ActorEndPlayDel(OnActorEndPlay));
-            actorComponentBeginPlay = AddVTableRedirect(actorComponentClass, "DummyActorComponentBeginPlay", new ActorComponentBeginPlayDel(OnActorComponentBeginPlay));
-            actorComponentEndPlay = AddVTableRedirect(actorComponentClass, "DummyActorComponentEndPlay", new ActorComponentEndPlayDel(OnActorComponentEndPlay));
+            //repProps = AddVTableRedirect(objectClass, "DummyRepProps", new GetLifetimeReplicatedPropsDel(OnGetLifetimeReplicatedProps));
+            //setupPlayerInput = AddVTableRedirect(pawnClass, "DummySetupPlayerInput", new SetupPlayerInputComponentDel(OnSetupPlayerInputComponent));
+            //actorBeginPlay = AddVTableRedirect(actorClass, "DummyActorBeginPlay", new ActorBeginPlayDel(OnActorBeginPlay));
+            //actorEndPlay = AddVTableRedirect(actorClass, "DummyActorEndPlay", new ActorEndPlayDel(OnActorEndPlay));
+            //actorComponentBeginPlay = AddVTableRedirect(actorComponentClass, "DummyActorComponentBeginPlay", new ActorComponentBeginPlayDel(OnActorComponentBeginPlay));
+            //actorComponentEndPlay = AddVTableRedirect(actorComponentClass, "DummyActorComponentEndPlay", new ActorComponentEndPlayDel(OnActorComponentEndPlay));
         }
 
         private static FunctionRedirect repProps;
@@ -164,7 +164,10 @@ namespace UnrealEngine.Runtime
         public static unsafe void Load()
         {
             vtableRedirects = new List<FunctionRedirect>();
-            AddVTableRedirects();
+
+            return;
+			
+            // AddVTableRedirects();
 
             // We have three classes UDummyObject3 : UDummyObject2 : UDummyObject1 : UObject
             //
@@ -177,6 +180,7 @@ namespace UnrealEngine.Runtime
             // - This may break down in situations where there is multiple inheritance
             // - If this fails to complete properly this will result in a crash (or worse)
 
+			/*
             foreach (FunctionRedirect redirect in vtableRedirects)
             {
                 IntPtr dummyClass1 = NativeReflection.GetClass("/Script/USharp." + redirect.DummyName + "1");
@@ -205,6 +209,7 @@ namespace UnrealEngine.Runtime
                     }
                 }
             }
+			*/
         }
 
         public static unsafe void Unload()
@@ -251,8 +256,10 @@ namespace UnrealEngine.Runtime
 
         public static unsafe void HackVTable(UObject obj)
         {
+            return;
+			
             // This will swap out the vtable entry and store the old one in our managed UClass
-
+			/*
             if (!Native_UObjectBaseUtility.IsA(obj.Address, Runtime.Classes.UClass))
             {
                 UClass unrealClass = obj.GetClass();
@@ -305,6 +312,7 @@ namespace UnrealEngine.Runtime
                     }
                 }
             }
+			*/
         }
 
         private static unsafe IntPtr FindOriginalVTableOwner(IntPtr baseMostClass, IntPtr ownerClass, IntPtr functionAddress, int vtableIndex)
