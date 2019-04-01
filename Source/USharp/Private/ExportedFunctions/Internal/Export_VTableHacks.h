@@ -14,7 +14,7 @@ CSEXPORT void CSCONV Export_VTableHacks_Set_VTableCallback(const FString& DummyN
 	{
 		// Use the same names as the class
 		DummyNames.Add(TEXT("DummyRepProps"), (void**)&GetLifetimeReplicatedPropsCallback);
-		DummyNames.Add(TEXT("DummySetupPlayerInput"), (void**)&SetupPlayerInputComponentCallback);
+		//DummyNames.Add(TEXT("DummySetupPlayerInput"), (void**)&SetupPlayerInputComponentCallback);
 		DummyNames.Add(TEXT("DummyActorBeginPlay"), (void**)&ActorBeginPlayCallback);
 		DummyNames.Add(TEXT("DummyActorEndPlay"), (void**)&ActorEndPlayCallback);
 		DummyNames.Add(TEXT("DummyActorComponentBeginPlay"), (void**)&ActorComponentBeginPlayCallback);

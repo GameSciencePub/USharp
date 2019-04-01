@@ -239,13 +239,19 @@ void CSharpLoader::SetupPaths()
 	FString PluginsBaseDir = GetPluginBinariesDir();
 
 	// Managed plugins should be under "/Binaries/Managed/"
-	csharpPaths.Add(FPaths::Combine(*PluginsBaseDir, TEXT("Managed")));
+    FString CSharpPath = FPaths::Combine(*PluginsBaseDir, TEXT("Managed"));
+    UE_LOG(LogTemp, Log, TEXT("USharp CSharpPath: %s"), *CSharpPath);
+	csharpPaths.Add(CSharpPath);
 	
 	// Mono should be under "/Binaries/Managed/Runtimes/Mono/[PLATFORM]/bin/"
-	monoLibPaths.Add(FPaths::Combine(*PluginsBaseDir, TEXT("Managed"), TEXT("Runtimes"), TEXT("Mono"), *GetPlatformString(), TEXT("bin")));
+    FString MonoLibPath = FPaths::Combine(*PluginsBaseDir, TEXT("Managed"), TEXT("Runtimes"), TEXT("Mono"), *GetPlatformString(), TEXT("bin"));
+    UE_LOG(LogTemp, Log, TEXT("USharp MonoLibPath: %s"), *MonoLibPath);
+	monoLibPaths.Add(MonoLibPath);
 
 	// CoreCLR should be under "/Binaries/Managed/Runtimes/CoreCLR/[PLATFORM]/"
-	coreCLRLibPaths.Add(FPaths::Combine(*PluginsBaseDir, TEXT("Managed"), TEXT("Runtimes"), TEXT("CoreCLR"), *GetPlatformString()));
+    FString CoreCLRPath = FPaths::Combine(*PluginsBaseDir, TEXT("Managed"), TEXT("Runtimes"), TEXT("CoreCLR"), *GetPlatformString());
+    UE_LOG(LogTemp, Log, TEXT("USharp CoreCLRPath: %s"), *CoreCLRPath);
+	coreCLRLibPaths.Add(CoreCLRPath);
 }
 
 FString CSharpLoader::GetPlatformString()
@@ -404,6 +410,8 @@ void OnMonoPrint(const char* str, mono_bool is_stdout)
 
 bool CSharpLoader::LoadRuntimeMono()
 {
+    UE_LOG(LogTemp, Log, TEXT("USharp Loading Mono"));
+
 	FString dllPath = GetMonoDllPath();
 	if (!FPaths::FileExists(dllPath))
 	{
@@ -523,15 +531,19 @@ bool CSharpLoader::LoadRuntimeMono()
 
 bool CSharpLoader::LoadRuntimeCoreCLR()
 {
+    UE_LOG(LogTemp, Log, TEXT("USharp Loading CoreCLR"));
+
 	FString dllPath = GetCoreCLRDllPath();
 	if (!FPaths::FileExists(dllPath))
 	{
+        UE_LOG(LogTemp, Log, TEXT("USharp can't find CLR dll : %s"), *dllPath);
 		return false;
 	}
 
 	void* dllHandle = FPlatformProcess::GetDllHandle(*dllPath);
 	if (dllHandle == NULL)
 	{
+        UE_LOG(LogTemp, Log, TEXT("USharp failed to load CLR dll : %s"), *dllPath);
 		return false;
 	}
 
@@ -547,6 +559,8 @@ bool CSharpLoader::LoadRuntimeCoreCLR()
 		coreclr_create_delegate == NULL ||
 		coreclr_execute_assembly == NULL)
 	{
+        UE_LOG(LogTemp, Log, TEXT("USharp CLR functions is missing. dll : %s"), *dllPath);
+		
 		return false;
 	}
 
@@ -555,6 +569,8 @@ bool CSharpLoader::LoadRuntimeCoreCLR()
 
 bool CSharpLoader::LoadRuntimeCLR()
 {
+    UE_LOG(LogTemp, Log, TEXT("USharp Loading CLR"));
+	
 #if PLATFORM_WINDOWS
 	TArray<FString> runtimeVersions = GetRuntimeVersions(EDotNetRuntime::CLR);
 	if (runtimeVersions.Num() == 0)
@@ -695,6 +711,8 @@ bool CSharpLoader::Load(FString assemblyPath, FString customArgs, FString loader
 	FString fullAssemblyPath = assemblyPath;
 	if (!GetAssemblyPath(fullAssemblyPath, fullAssemblyPath, true))
 	{
+        UE_LOG(LogTemp, Log, TEXT("USharp GetAssemblyPath failed"));
+		
 		return false;
 	}
 	
@@ -728,10 +746,14 @@ bool CSharpLoader::Load(FString assemblyPath, FString customArgs, FString loader
 	const TCHAR* entryPointClass = TEXT("UnrealEngine.EntryPoint");
 	const TCHAR* entryPointMethod = TEXT("DllMain");
 
+    UE_LOG(LogTemp, Log, TEXT("USharp Entry dll is %s"), *fullAssemblyPath);
+
 #if PLATFORM_WINDOWS
 	if (RuntimeTypeHasFlag(runtimeState.InitializedRuntimes, EDotNetRuntime::CLR))
 	{
 		::DWORD retVal;
+        UE_LOG(LogTemp, Log, TEXT("USharp EDotNetRuntime::CLR ExecuteInDefaultAppDomain %s"), *entryPointMethodArg);
+
 		HRESULT hr = runtimeHost->ExecuteInDefaultAppDomain(TCHAR_TO_WCHAR(*fullAssemblyPath), TCHAR_TO_WCHAR(entryPointClass), 
 			TCHAR_TO_WCHAR(entryPointMethod), TCHAR_TO_WCHAR(*entryPointMethodArg), &retVal);
 		if (FAILED(hr) || retVal != 0)
@@ -893,6 +915,11 @@ bool CSharpLoader::Load(FString assemblyPath, FString customArgs, FString loader
 		}
 	}
 
+    if (runtimeState.LoadedRuntimes == EDotNetRuntime::None)
+    {
+        UE_LOG(LogTemp, Log, TEXT("USharp All RunTime failed"));
+    }
+    
 	return runtimeState.LoadedRuntimes != EDotNetRuntime::None;
 }
 
