@@ -234,10 +234,6 @@ namespace UnrealEngine.Runtime
                             CompileGeneratedCode();
                             break;
 
-                        case "exit":
-                            Native_FPlatformMisc.RequestExit(true);
-                            break;
-
                         default:
                             invalidArgs = true;
                             break;

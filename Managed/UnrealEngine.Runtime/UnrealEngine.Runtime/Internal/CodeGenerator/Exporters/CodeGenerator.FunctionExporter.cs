@@ -11,10 +11,10 @@ namespace UnrealEngine.Runtime
     {
         private static HashSet<string> suppressFunctions = new HashSet<string>()
         {
-             //"/Script/Engine.Actor:ReceiveBeginPlay",
-             //"/Script/Engine.Actor:ReceiveEndPlay",
-             //"/Script/Engine.ActorComponent:ReceiveBeginPlay",
-             //"/Script/Engine.ActorComponent:ReceiveEndPlay"
+             "/Script/Engine.Actor:ReceiveBeginPlay",
+             "/Script/Engine.Actor:ReceiveEndPlay",
+             "/Script/Engine.ActorComponent:ReceiveBeginPlay",
+             "/Script/Engine.ActorComponent:ReceiveEndPlay"
         };
 
         private bool CanExportFunction(UFunction function, bool isBlueprintType)
@@ -637,13 +637,6 @@ namespace UnrealEngine.Runtime
 
                 AppendPropertyOffset(builder, functionName + "_" + paramName, parameter, true, namespaces);
             }
-
-            // add static loader
-            builder.AppendLine("static " + delegateTypeName + "()");
-            builder.OpenBrace();
-            builder.AppendLine(Settings.VarNames.LoadNativeType + "();");
-            builder.CloseBrace();
-            builder.AppendLine();
 
             // Add the native type info initializer to get the offsets
             builder.AppendLine("static void " + Settings.VarNames.LoadNativeType + "()");

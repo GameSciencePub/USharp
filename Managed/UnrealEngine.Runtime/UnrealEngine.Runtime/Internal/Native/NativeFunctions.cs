@@ -267,8 +267,7 @@ namespace UnrealEngine.Runtime.Native
             }
 
             // Generate / update the C# game project
-            // GS WARNING : do this manually
-            //TemplateProjectGenerator.Generate();
+            TemplateProjectGenerator.Generate();
 
             using (var timing = HotReload.Timing.Create(HotReload.Timing.GC_Collect))
             {
