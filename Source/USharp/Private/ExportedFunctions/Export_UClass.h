@@ -450,7 +450,10 @@ CSEXPORT UObject* CSCONV Export_UClass_GetArchetypeForCDO(UClass* instance)
 
 CSEXPORT void CSCONV Export_UClass_GetDefaultObjectPreloadDependencies(UClass* instance, TArray<UObject*>& OutDeps)
 {
-	instance->GetDefaultObjectPreloadDependencies(OutDeps);
+	#if ENGINE_MINOR_VERSION >= 21
+		instance->GetDefaultObjectPreloadDependencies(OutDeps);
+	#endif
+	// instance->GetDefaultObjectPreloadDependencies(OutDeps);
 }
 
 CSEXPORT void CSCONV Export_UClass_SetUpRuntimeReplicationData(UClass* instance)

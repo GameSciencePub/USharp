@@ -682,7 +682,11 @@ void FSharpHotReloadClassReinstancer::UpdateDefaultProperties()
 					// Serialize current value to a byte array as we don't have the previous CDO to compare against, we only have its serialized property data
 					CurrentValueSerializedData.Empty(CurrentValueSerializedData.Num() + CurrentValueSerializedData.GetSlack());
 					FPropertyValueMemoryWriter CurrentValueWriter(CurrentValueSerializedData);
-					PropertyToUpdate.Property->SerializeItem(FStructuredArchiveFromArchive(CurrentValueWriter).GetSlot(), InstanceValuePtr);
+#if ENGINE_MINOR_VERSION >= 21
+                    PropertyToUpdate.Property->SerializeItem(FStructuredArchiveFromArchive(CurrentValueWriter).GetSlot(), InstanceValuePtr);
+#else
+                    PropertyToUpdate.Property->SerializeItem(CurrentValueWriter, InstanceValuePtr);
+#endif
 
 					// Update only when the current value on the instance is identical to the original CDO
 					if (CurrentValueSerializedData.Num() == PropertyToUpdate.OldSerializedSize &&
